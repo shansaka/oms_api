@@ -1,4 +1,7 @@
+using Microsoft.EntityFrameworkCore;
+using Oms.Infrastructure.Persistence;
 using Oms.WebApi;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,6 +13,11 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddHealthChecks();
 builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 builder.Services.AddProblemDetails();
+
+builder.Host.UseSerilog((context, services, configuration) => configuration.ReadFrom.Configuration(context.Configuration).Enrich.FromLogContext());
+
+var connectionString = builder.Configuration.GetConnectionString("DefaultConfiguration");
+builder.Services.AddDbContext<OmsDbContext>(options => options.UseNpgsql(connectionString, b => b.MigrationsAssembly("Oms.Infrastructure")));
 
 var app = builder.Build();
 app.UseExceptionHandler();
