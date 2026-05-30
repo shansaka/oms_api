@@ -1,0 +1,42 @@
+name: OMS Continuous Integration
+
+on:
+  pull_request:
+    branches:
+      - main
+      - dev
+  push:
+    branches:
+      - main
+      - dev
+
+jobs:
+  build-and-test:
+    name: Build & Test (.NET 10)
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Checkout the source code
+      - name: Checkout Source Code
+        uses: actions/checkout@v4
+
+      # Step 2: Install the .NET SDK (matching target net10.0)
+      - name: Setup .NET SDK
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+          # Caching NuGet packages built directly into setup-dotnet action
+          cache: true
+          cache-dependency-path: '**/packages.lock.json' # Or matches Oms.sln dependency state
+
+      # Step 3: Restore dependencies
+      - name: Restore NuGet Packages
+        run: dotnet restore Oms.sln
+
+      # Step 4: Compile the entire solution in Release configuration
+      - name: Build Solution
+        run: dotnet build Oms.sln --configuration Release --no-restore
+
+      # Step 5: Execute all test suites in the solution
+      - name: Run Test Suites
+        run: dotnet test Oms.sln --configuration Release --no-build --verbosity normal

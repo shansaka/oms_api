@@ -12,8 +12,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Oms.WebApi", "src\Oms.WebAp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Oms.WebApi.IntegrationTests", "tests\Oms.WebApi.IntegrationTests\Oms.WebApi.IntegrationTests.csproj", "{FEFA050A-A0ED-4F7B-93C0-DE374FB6BC98}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Oms.WebApi.IntegrationTests", "tests\Oms.WebApi.IntegrationTests\Oms.WebApi.IntegrationTests.csproj", "{806B68C2-F03D-4100-83AF-945AF7AF27A7}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
