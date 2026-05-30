@@ -31,7 +31,7 @@ jobs:
 
       # Step 3: Restore dependencies
       - name: Restore NuGet Packages
-        run: dotnet restore Oms.sln
+        run: dotnet restore Oms.sln --locked-mode
 
       # Step 4: Compile the entire solution in Release configuration
       - name: Build Solution
