@@ -1,9 +1,11 @@
 using Microsoft.EntityFrameworkCore;
 using Oms.Domain.Entities;
+using Oms.Application.Common.Interfaces;
 
 namespace Oms.Infrastructure.Persistence;
 
-public class OmsDbContext : DbContext
+
+public class OmsDbContext : DbContext, IApplicationDbContext
 {
     public OmsDbContext(DbContextOptions<OmsDbContext> options) : base(options)
     {

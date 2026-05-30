@@ -1,7 +1,8 @@
-using Microsoft.EntityFrameworkCore;
-using Oms.Infrastructure.Persistence;
+using Oms.Infrastructure; 
 using Oms.WebApi;
 using Serilog;
+using Oms.WebApi.Endpoints;
+using Oms.Application; 
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,8 +17,9 @@ builder.Services.AddProblemDetails();
 
 builder.Host.UseSerilog((context, services, configuration) => configuration.ReadFrom.Configuration(context.Configuration).Enrich.FromLogContext());
 
-var connectionString = builder.Configuration.GetConnectionString("DefaultConfiguration");
-builder.Services.AddDbContext<OmsDbContext>(options => options.UseNpgsql(connectionString, b => b.MigrationsAssembly("Oms.Infrastructure")));
+//  Register both Application and Infrastructure Services!
+builder.Services.AddApplicationServices();  
+builder.Services.AddInfrastructureServices(builder.Configuration);
 
 var app = builder.Build();
 app.UseExceptionHandler();
@@ -36,6 +38,9 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseHealthChecks("/health");
+
+// Register all modular endpoints here!
+app.MapTenantEndpoints(); 
 
 app.Run();
 
