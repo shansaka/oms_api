@@ -10,6 +10,10 @@ public class OmsDbContext : DbContext
     }
     
     public DbSet<Order> Orders => Set<Order>();
+    public DbSet<User> Users => Set<User>();
+    public DbSet<Tenant> Tenants => Set<Tenant>();
+    public DbSet<TenantSettings> TenantSettings => Set<TenantSettings>();
+    
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
