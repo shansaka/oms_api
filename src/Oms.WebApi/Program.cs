@@ -7,7 +7,6 @@ using Oms.Application;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -18,7 +17,7 @@ builder.Services.AddProblemDetails();
 builder.Host.UseSerilog((context, services, configuration) => configuration.ReadFrom.Configuration(context.Configuration).Enrich.FromLogContext());
 
 //  Register both Application and Infrastructure Services!
-builder.Services.AddApplicationServices();  
+builder.Services.AddApplicationServices(builder.Configuration);  
 builder.Services.AddInfrastructureServices(builder.Configuration);
 
 var app = builder.Build();
