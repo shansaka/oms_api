@@ -3,6 +3,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Oms.Application.Common.Interfaces;
 using Oms.Infrastructure.Persistence;
+using Oms.Infrastructure.Security;
 
 namespace Oms.Infrastructure;
 
@@ -18,6 +19,9 @@ public static class DependencyInjection
         
         // 2. Bind the Interface to our concrete class as a Scoped dependency
         services.AddScoped<IApplicationDbContext>(provider => provider.GetRequiredService<OmsDbContext>());
+
+        // Register password hasher
+        services.AddSingleton<IPasswordHasher, BCryptPasswordHasher>();
         
         return services;
     }

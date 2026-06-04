@@ -24,5 +24,7 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
             .WithMany(t => t.Users)
             .HasForeignKey(p => p.TenantId)
             .OnDelete(DeleteBehavior.Restrict);
+        
+        builder.Property(p => p.PasswordHash).HasMaxLength(500).IsRequired();
     }
 }

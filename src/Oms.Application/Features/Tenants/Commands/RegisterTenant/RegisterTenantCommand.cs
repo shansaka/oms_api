@@ -6,7 +6,8 @@ public record RegisterTenantCommand(
     string CompanyName,
     string OwnerFirstName,
     string OwnerLastName,
-    string OwnerEmail
+    string OwnerEmail,
+    string OwnerPassword
 ) : IRequest<TenantRegistrationResult>;
 
 public record TenantRegistrationResult(Guid TenantId, string Slug, Guid OwnerId);

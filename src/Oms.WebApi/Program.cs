@@ -38,6 +38,7 @@ app.UseHealthChecks("/health");
 
 // Register all modular endpoints here!
 app.MapTenantEndpoints(); 
+app.MapAuthEndpoints();
 
 app.Run();
 
