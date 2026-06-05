@@ -23,8 +23,8 @@ public class TenantRegistrationTests : IClassFixture<OmsTestWebApplicationFactor
             CompanyName: "Acme Corp",
             OwnerFirstName: "Salindu",
             OwnerLastName: "Hansaka",
-            OwnerEmail: "salindu.h@acme.com",
-            OwnerPassword: "P@ssw0rd"
+            OwnerEmail: "salindu@acme.com",
+            OwnerPassword: "testing123456789"
         );
         
         // Act
@@ -46,8 +46,20 @@ public class TenantRegistrationTests : IClassFixture<OmsTestWebApplicationFactor
         var client = _factory.CreateClient();
         
         // Arrange: Try to register the exact same company name twice
-        var command1 = new RegisterTenantCommand("Unique Corp", "UserOne", "Test", "one@unique.com", "P@ssw0rd");
-        var command2 = new RegisterTenantCommand("Unique Corp", "UserTwo", "Test", "two@unique.com", "P@ssw0rd");
+        var command1 =  new RegisterTenantCommand(
+            CompanyName: "Veesal Tech",
+            OwnerFirstName: "Salindu",
+            OwnerLastName: "Hansaka",
+            OwnerEmail: "salindu.h@acme.com",
+            OwnerPassword: "testing123456789"
+        );
+        var command2 =  new RegisterTenantCommand(
+            CompanyName: "Veesal Tech",
+            OwnerFirstName: "Salindu",
+            OwnerLastName: "Hansaka",
+            OwnerEmail: "salindu.h2@acme.com",
+            OwnerPassword: "testing123456789"
+        );
         
         // Act
         var response1 = await client.PostAsJsonAsync("/api/tenants/register", command1);
