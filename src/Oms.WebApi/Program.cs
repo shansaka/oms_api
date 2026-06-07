@@ -1,3 +1,6 @@
+using System.Text;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
 using Oms.Infrastructure; 
 using Oms.WebApi;
 using Serilog;
@@ -19,6 +22,24 @@ builder.Host.UseSerilog((context, services, configuration) => configuration.Read
 builder.Services.AddApplicationServices(builder.Configuration);  
 builder.Services.AddInfrastructureServices(builder.Configuration);
 
+// JWT auth
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = true,
+            ValidIssuer = builder.Configuration["Jwt:Issuer"],
+            ValidAudience = builder.Configuration["Jwt:Audience"],
+            IssuerSigningKey = new SymmetricSecurityKey(
+                Encoding.UTF8.GetBytes(builder.Configuration["Jwt:SecretKey"]!))
+        };
+    });
+builder.Services.AddAuthorization();
+
 var app = builder.Build();
 app.UseExceptionHandler();
 
@@ -39,6 +60,9 @@ app.UseHealthChecks("/health");
 // Register all modular endpoints here!
 app.MapTenantEndpoints(); 
 app.MapAuthEndpoints();
+
+app.UseAuthentication();
+app.UseAuthorization();
 
 app.Run();
 

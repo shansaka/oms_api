@@ -16,4 +16,5 @@ public class User
     
     // Navigation property
     public Tenant Tenant { get; set; } = null!;
+    public ICollection<RefreshToken> RefreshTokens { get; set; } = new List<RefreshToken>();
 }

@@ -19,9 +19,13 @@ public static class DependencyInjection
         
         // 2. Bind the Interface to our concrete class as a Scoped dependency
         services.AddScoped<IApplicationDbContext>(provider => provider.GetRequiredService<OmsDbContext>());
-
+        
         // Register password hasher
         services.AddSingleton<IPasswordHasher, BCryptPasswordHasher>();
+        
+        // JWT
+        services.Configure<JwtOptions>(configuration.GetSection("Jwt"));
+        services.AddScoped<IJwtProvider, JwtProvider>();
         
         return services;
     }
