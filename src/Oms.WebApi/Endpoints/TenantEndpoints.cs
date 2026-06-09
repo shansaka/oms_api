@@ -16,6 +16,10 @@ public static class TenantEndpoints
             .WithName("RegisterTenant")
             .Produces<TenantRegistrationResult>(StatusCodes.Status201Created)
             .Produces(StatusCodes.Status400BadRequest);
+        
+        group.MapGet("/settings", GetTenantSettings)
+            .WithName("GetTenantSettings")
+            .RequireAuthorization("tenant:manage"); // Can use the policy string directly
     }
     
     // The endpoint handler method
@@ -36,5 +40,10 @@ public static class TenantEndpoints
             // Returns 400 Bad Request with a friendly error payload
             return Results.BadRequest(new { message = ex.Message });
         }
+    }
+
+    private static async Task<IResult> GetTenantSettings()
+    {
+        return Results.Ok();
     }
 }
