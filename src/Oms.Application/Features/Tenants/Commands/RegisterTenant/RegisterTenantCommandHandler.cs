@@ -8,10 +8,12 @@ namespace Oms.Application.Features.Tenants.Commands.RegisterTenant;
 public class RegisterTenantCommandHandler : IRequestHandler<RegisterTenantCommand, TenantRegistrationResult>
 {
     private readonly IApplicationDbContext _context;
+    private readonly IPasswordHasher _passwordHasher;
 
-    public RegisterTenantCommandHandler(IApplicationDbContext context)
+    public RegisterTenantCommandHandler(IApplicationDbContext context, IPasswordHasher passwordHasher)
     {
         _context = context;
+        _passwordHasher =  passwordHasher;
     }
     
     public async Task<TenantRegistrationResult> Handle(RegisterTenantCommand request, CancellationToken cancellationToken)
@@ -52,12 +54,21 @@ public class RegisterTenantCommandHandler : IRequestHandler<RegisterTenantComman
             Id = Guid.NewGuid(),
             TenantId = tenant.Id,
             Email = request.OwnerEmail,
+            PasswordHash = _passwordHasher.Hash(request.OwnerPassword),
             FirstName = request.OwnerFirstName,
             LastName = request.OwnerLastName,
             CreatedAt = DateTime.UtcNow,
-            Tenant = tenant,
+            Tenant = tenant
 
         };
+        
+        //adding owner role
+        var ownerRole = await _context.Roles.FirstOrDefaultAsync(r => r.Name == "Owner", cancellationToken);
+        if (ownerRole != null)
+        {
+            owner.Roles.Add(ownerRole);
+        }
+        
         tenant.Users.Add(owner);
         
         _context.Tenants.Add(tenant);

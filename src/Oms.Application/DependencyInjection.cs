@@ -1,5 +1,6 @@
 using System.Reflection;
 using FluentValidation;
+using MediatR;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -17,7 +18,10 @@ public static class DependencyInjection
         {
             cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly());
             cfg.LicenseKey = configuration["MediatR:LicenseKey"];
+            cfg.AddBehavior(typeof(IPipelineBehavior<,>), typeof(Oms.Application.Common.Behaviours.ValidationBehaviour<,>));
         });
+        
+        
 
         return services;
     }
