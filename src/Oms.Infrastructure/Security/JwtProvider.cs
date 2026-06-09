@@ -18,13 +18,29 @@ public class JwtProvider : IJwtProvider
     }
     public string GenerateAccessToken(User user)
     {
-        var claims = new[]
+        var claims = new List<Claim>
         {
             new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
             new Claim(JwtRegisteredClaimNames.Email, user.Email),
             new Claim("tenantId", user.TenantId.ToString()),
             new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
         };
+        
+        foreach (var role in user.Roles)
+        {
+            claims.Add(new Claim(ClaimTypes.Role, role.Name));
+        }
+        
+        var permissions = user.Roles
+            .SelectMany(r => r.Permissions)
+            .Select(p => p.Name)
+            .Distinct();
+        
+        foreach (var permissionName in permissions)
+        {
+            claims.Add(new Claim("permissions", permissionName));
+        }
+        
         var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_options.SecretKey));
         var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
         var token = new JwtSecurityToken(

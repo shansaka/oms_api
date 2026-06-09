@@ -58,9 +58,17 @@ public class RegisterTenantCommandHandler : IRequestHandler<RegisterTenantComman
             FirstName = request.OwnerFirstName,
             LastName = request.OwnerLastName,
             CreatedAt = DateTime.UtcNow,
-            Tenant = tenant,
+            Tenant = tenant
 
         };
+        
+        //adding owner role
+        var ownerRole = await _context.Roles.FirstOrDefaultAsync(r => r.Name == "Owner", cancellationToken);
+        if (ownerRole != null)
+        {
+            owner.Roles.Add(ownerRole);
+        }
+        
         tenant.Users.Add(owner);
         
         _context.Tenants.Add(tenant);

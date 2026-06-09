@@ -9,6 +9,8 @@ public interface IApplicationDbContext
     DbSet<User> Users { get; }
     DbSet<TenantSettings> TenantSettings { get; }
     DbSet<RefreshToken> RefreshTokens { get; }
+    DbSet<Role> Roles { get; }
+    DbSet<Permission> Permissions { get; }
     
     // This method is required so the Application layer can persist changes
     Task<int> SaveChangesAsync(CancellationToken cancellationToken);
