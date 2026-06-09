@@ -41,7 +41,7 @@ public class LoginCommandHandler : IRequestHandler<LoginCommand, LoginResult>
         var newRefreshToken = _jwtProvider.GenerateRefreshToken();
         
         // Save refresh token to db
-        var refreshTokenEntity = new RefreshToken
+        var refreshTokenEntity = new Domain.Entities.RefreshToken
         {
             Id = Guid.NewGuid(),
             Token = newRefreshToken,
