@@ -8,8 +8,10 @@ using Oms.WebApi;
 using Serilog;
 using Oms.WebApi.Endpoints;
 using Oms.Application;
+using Oms.Application.Common.Interfaces;
 using Oms.Infrastructure.Persistence;
 using Oms.Infrastructure.Security;
+using Oms.WebApi.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -46,7 +48,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 // Register the dynamic policy provider and handler
 builder.Services.AddSingleton<IAuthorizationPolicyProvider, PermissionPolicyProvider>();
 builder.Services.AddScoped<IAuthorizationHandler, PermissionAuthorizationHandler>();
-
+builder.Services.AddScoped<ITenantContextAccessor, TenantContextAccessor>();
 builder.Services.AddAuthorization();
 
 
@@ -78,6 +80,7 @@ app.MapTenantEndpoints();
 app.MapAuthEndpoints();
 
 app.UseAuthentication();
+app.UseMiddleware<TenantResolverMiddleware>();
 app.UseAuthorization();
 
 app.Run();

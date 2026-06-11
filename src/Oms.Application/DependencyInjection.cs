@@ -21,8 +21,6 @@ public static class DependencyInjection
             cfg.AddBehavior(typeof(IPipelineBehavior<,>), typeof(Oms.Application.Common.Behaviours.ValidationBehaviour<,>));
         });
         
-        
-
         return services;
     }
 }
