@@ -4,7 +4,9 @@ using System.Net.Http.Json;
 using Oms.Application.Features.Auth.Commands.Login;
 using Oms.Application.Features.Tenants.Commands.RegisterTenant;
 using Oms.Application.Features.Users.Commands;
+using Oms.Application.Features.Users.Commands.CreateStaff;
 using Oms.Application.Features.Users.Queries;
+using Oms.Application.Features.Users.Queries.GetTenantUsers;
 
 namespace Oms.WebApi.IntegrationTests.users;
 

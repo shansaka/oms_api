@@ -1,6 +1,6 @@
 using MediatR;
 
-namespace Oms.Application.Features.Users.Queries;
+namespace Oms.Application.Features.Users.Queries.GetTenantUsers;
 
 public record GetTenantUsersQuery() : IRequest<List<UserDto>>;
 public record UserDto(

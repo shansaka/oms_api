@@ -34,5 +34,7 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
                 r => r.HasOne<Role>().WithMany().HasForeignKey("RoleId").OnDelete(DeleteBehavior.Cascade),
                 u => u.HasOne<User>().WithMany().HasForeignKey("UserId").OnDelete(DeleteBehavior.Cascade)
             );
+        
+        builder.Property(p => p.IsActive).HasDefaultValue(true);
     }
 }

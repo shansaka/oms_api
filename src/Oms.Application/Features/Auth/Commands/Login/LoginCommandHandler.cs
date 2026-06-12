@@ -30,6 +30,11 @@ public class LoginCommandHandler : IRequestHandler<LoginCommand, LoginResult>
             _passwordHasher.Verify(request.Password, "$2a$12$DummyHashDummyHashDummyHashDummyHashDummyHashDummy");
             return new LoginResult(false, "Invalid credentials.", null, null);
         }
+
+        if (!user.IsActive)
+        {
+            return new LoginResult(false, "Your account has been deactivated.", null, null);
+        }
         
         var isCorrectPassword = _passwordHasher.Verify(request.Password, user.PasswordHash);
         if (!isCorrectPassword)

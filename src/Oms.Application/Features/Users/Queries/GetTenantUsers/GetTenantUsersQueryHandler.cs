@@ -2,7 +2,7 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Oms.Application.Common.Interfaces;
 
-namespace Oms.Application.Features.Users.Queries;
+namespace Oms.Application.Features.Users.Queries.GetTenantUsers;
 
 public class GetTenantUsersQueryHandler : IRequestHandler<GetTenantUsersQuery, List<UserDto>>
 {

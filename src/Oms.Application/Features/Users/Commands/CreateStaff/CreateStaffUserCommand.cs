@@ -1,6 +1,6 @@
 using MediatR;
 
-namespace Oms.Application.Features.Users.Commands;
+namespace Oms.Application.Features.Users.Commands.CreateStaff;
 
 public record CreateStaffUserCommand(
     string FirstName,

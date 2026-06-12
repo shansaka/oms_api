@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Oms.Application.Common.Interfaces;
 using Oms.Domain.Entities;
 
-namespace Oms.Application.Features.Users.Commands;
+namespace Oms.Application.Features.Users.Commands.CreateStaff;
 
 public class CreateStaffUserCommandHandler : IRequestHandler<CreateStaffUserCommand, CreateStaffUserResult>
 {

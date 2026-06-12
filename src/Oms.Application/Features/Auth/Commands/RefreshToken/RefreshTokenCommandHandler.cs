@@ -23,7 +23,7 @@ public class RefreshTokenCommandHandler : IRequestHandler<RefreshTokenCommand, R
             .SingleOrDefaultAsync(t => t.Token == request.RefreshToken,
                 cancellationToken);
 
-        if (existingToken == null || !existingToken.IsActive)
+        if (existingToken == null || !existingToken.IsActive || !existingToken.User.IsActive)
         {
             return new RefreshTokenResult(false, "Invalid or expired refresh token.", null, null);
         }

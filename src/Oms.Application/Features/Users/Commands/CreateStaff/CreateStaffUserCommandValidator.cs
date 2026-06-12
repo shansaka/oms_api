@@ -1,10 +1,10 @@
 using FluentValidation;
 
-namespace Oms.Application.Features.Users.Commands;
+namespace Oms.Application.Features.Users.Commands.CreateStaff;
 
-public class CreateStaffUserValidator : AbstractValidator<CreateStaffUserCommand>
+public class CreateStaffUserCommandValidator : AbstractValidator<CreateStaffUserCommand>
 {
-    public CreateStaffUserValidator()
+    public CreateStaffUserCommandValidator()
     {
         RuleFor(x => x.FirstName).NotEmpty().MaximumLength(256);
         RuleFor(x => x.LastName).NotEmpty().MaximumLength(256);
