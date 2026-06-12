@@ -1,6 +1,6 @@
 namespace Oms.Domain.Entities;
 
-public class User
+public class User : ITenantEntity
 {
     public Guid Id { get; set; }
     

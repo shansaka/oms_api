@@ -17,7 +17,7 @@ public class TenantResolverMiddleware
     public async Task InvokeAsync(HttpContext context, ITenantContextAccessor tenantContextAccessor)
     {
         // 1. Check authenticated JWT claims (Tenant ID)
-        var tenantIdClaim = context.User.FindFirst("tenant_id")?.Value;
+        var tenantIdClaim = context.User.FindFirst("tenantId")?.Value;
 
         if (!string.IsNullOrEmpty(tenantIdClaim))
         {

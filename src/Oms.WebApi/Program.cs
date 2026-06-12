@@ -78,6 +78,7 @@ app.UseHealthChecks("/health");
 // Register all modular endpoints here!
 app.MapTenantEndpoints(); 
 app.MapAuthEndpoints();
+app.MapUserEndpoints(); 
 
 app.UseAuthentication();
 app.UseMiddleware<TenantResolverMiddleware>();

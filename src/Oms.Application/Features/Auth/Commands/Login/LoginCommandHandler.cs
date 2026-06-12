@@ -20,7 +20,7 @@ public class LoginCommandHandler : IRequestHandler<LoginCommand, LoginResult>
 
     public async Task<LoginResult> Handle(LoginCommand request, CancellationToken cancellationToken)
     {
-        var user = await _context.Users.Include(x => x.Roles).ThenInclude(p => p.Permissions).SingleOrDefaultAsync(
+        var user = await _context.Users.IgnoreQueryFilters().Include(x => x.Roles).ThenInclude(p => p.Permissions).SingleOrDefaultAsync(
             u => u.Email == request.Email, cancellationToken);
 
         // Security best practice: If user is not found, we still execute the verify method

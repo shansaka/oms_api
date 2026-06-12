@@ -9,11 +9,13 @@ public class RegisterTenantCommandHandler : IRequestHandler<RegisterTenantComman
 {
     private readonly IApplicationDbContext _context;
     private readonly IPasswordHasher _passwordHasher;
+    private readonly ITenantContextAccessor _tenantContextAccessor;
 
-    public RegisterTenantCommandHandler(IApplicationDbContext context, IPasswordHasher passwordHasher)
+    public RegisterTenantCommandHandler(IApplicationDbContext context, IPasswordHasher passwordHasher,  ITenantContextAccessor tenantContextAccessor)
     {
         _context = context;
         _passwordHasher =  passwordHasher;
+        _tenantContextAccessor = tenantContextAccessor;
     }
     
     public async Task<TenantRegistrationResult> Handle(RegisterTenantCommand request, CancellationToken cancellationToken)
@@ -25,7 +27,7 @@ public class RegisterTenantCommandHandler : IRequestHandler<RegisterTenantComman
             throw new InvalidOperationException($"The company name '{request.CompanyName}' generates a duplicate slug '{slug}'.");
         }
 
-        var emailExists = await _context.Users.AnyAsync(x => x.Email == request.OwnerEmail, cancellationToken: cancellationToken);
+        var emailExists = await _context.Users.IgnoreQueryFilters().AnyAsync(x => x.Email == request.OwnerEmail, cancellationToken: cancellationToken);
         if (emailExists)
         {
             throw new InvalidOperationException($"The owner email '{request.OwnerEmail}' already exists.");
@@ -38,7 +40,8 @@ public class RegisterTenantCommandHandler : IRequestHandler<RegisterTenantComman
             Slug = slug,
             CreatedAt = DateTime.UtcNow
         };
-
+        _tenantContextAccessor.SetTenantId(tenant.Id);
+        
         var tenantSettings = new TenantSettings
         {
             Id = Guid.NewGuid(),
